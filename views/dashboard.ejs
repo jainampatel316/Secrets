@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Secrets</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-user-secret"></i>
+                    <span>Secrets</span>
+                </div>
+                <div class="nav-menu">
+                    <span class="user-welcome">Welcome, <%= user.name %>!</span>
+                    <form action="/logout" method="POST" class="logout-form">
+                        <button type="submit" class="btn btn-outline">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="dashboard-header">
+                <h1>Your Secret Dashboard</h1>
+                <p>Secure space for your personal information</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- User Profile Card -->
+                <div class="dashboard-card profile-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Profile Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-info">
+                            <div class="info-item">
+                                <label>Full Name</label>
+                                <span><%= user.name %></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email Address</label>
+                                <span><%= user.email %></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Member Since</label>
+                                <span><%= new Date(user.registeredAt).toLocaleDateString('en-US', { 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                }) %></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Account Status</label>
+                                <span class="status-badge verified">
+                                    <i class="fas fa-shield-alt"></i> Verified
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Status Card -->
+                <div class="dashboard-card security-card">
+                    <div class="card-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Security Status</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="security-features">
+                            <div class="security-item active">
+                                <i class="fas fa-lock"></i>
+                                <span>Password Protected</span>
+                                <div class="status-indicator"></div>
+                            </div>
+                            <div class="security-item active">
+                                <i class="fas fa-key"></i>
+                                <span>JWT Authentication</span>
+                                <div class="status-indicator"></div>
+                            </div>
+                            <div class="security-item active">
+                                <i class="fas fa-cookie-bite"></i>
+                                <span>Secure Cookies</span>
+                                <div class="status-indicator"></div>
+                            </div>
+                            <div class="security-item active">
+                                <i class="fas fa-user-shield"></i>
+                                <span>Session Management</span>
+                                <div class="status-indicator"></div>
+                            </div>
+                        </div>
+                        <div class="security-score">
+                            <div class="score-circle">
+                                <div class="score-inner">
+                                    <span class="score-number">100</span>
+                                    <span class="score-label">%</span>
+                                </div>
+                            </div>
+                            <p>Your account is fully secured</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Card -->
+                <div class="dashboard-card activity-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <span class="activity-action">Successful Login</span>
+                                    <span class="activity-time">Just now</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <span class="activity-action">Account Created</span>
+                                    <span class="activity-time"><%= new Date(user.registeredAt).toLocaleDateString() %></span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <span class="activity-action">Security Verified</span>
+                                    <span class="activity-time"><%= new Date(user.registeredAt).toLocaleDateString() %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Card -->
+                <div class="dashboard-card actions-card">
+                    <div class="card-header">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="updateProfile()">
+                                <i class="fas fa-edit"></i>
+                                <span>Update Profile</span>
+                            </button>
+                            <button class="action-btn" onclick="changePassword()">
+                                <i class="fas fa-key"></i>
+                                <span>Change Password</span>
+                            </button>
+                            <button class="action-btn" onclick="downloadData()">
+                                <i class="fas fa-download"></i>
+                                <span>Download Data</span>
+                            </button>
+                            <button class="action-btn danger" onclick="deleteAccount()">
+                                <i class="fas fa-trash"></i>
+                                <span>Delete Account</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Secrets App. Built with security in mind.</p>
+                <div class="security-badges">
+                    <span class="badge"><i class="fas fa-shield-alt"></i> Secure</span>
+                    <span class="badge"><i class="fas fa-lock"></i> Encrypted</span>
+                    <span class="badge"><i class="fas fa-user-shield"></i> Private</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        function updateProfile() {
+            alert('Profile update feature coming soon!');
+        }
+
+        function changePassword() {
+            alert('Password change feature coming soon!');
+        }
+
+        function downloadData() {
+            alert('Data download feature coming soon!');
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                alert('Account deletion feature coming soon!');
+            }
+        }
+
+        // Animate security score on load
+        window.addEventListener('load', function() {
+            const scoreElement = document.querySelector('.score-number');
+            let score = 0;
+            const targetScore = 100;
+            const increment = targetScore / 50;
+
+            const animation = setInterval(() => {
+                score += increment;
+                if (score >= targetScore) {
+                    score = targetScore;
+                    clearInterval(animation);
+                }
+                scoreElement.textContent = Math.round(score);
+            }, 30);
+        });
+    </script>
+</body>
+</html>
