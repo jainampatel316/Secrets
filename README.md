@@ -68,7 +68,7 @@ A modern, secure web application built with Node.js and Express that demonstrate
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repository-url>
+   git clone https://github.com/jainampatel316/Secrets.git
    cd secrets
    ```
 
